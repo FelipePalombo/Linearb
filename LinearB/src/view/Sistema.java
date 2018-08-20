@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -88,9 +91,14 @@ public class Sistema extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Estoque Atual");
+        jMenu2.setText("Relatório");
 
         jMIRelFornecedor.setText("Fornecedor");
+        jMIRelFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIRelFornecedorActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMIRelFornecedor);
 
         jMIRelProduto.setText("Produto");
@@ -129,13 +137,29 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIFullScreenActionPerformed
 
     private void jMICadFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICadFornecedorActionPerformed
-        CadFornecedor cf = new CadFornecedor(this,true);
-        cf.setVisible(true);
+        CadFornecedor cf;
+        try {
+            cf = new CadFornecedor(this,true);
+            cf.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jMICadFornecedorActionPerformed
 
     private void jMISairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMISairActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMISairActionPerformed
+
+    private void jMIRelFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIRelFornecedorActionPerformed
+        try {
+            RelFornecedor rf;
+            rf = new RelFornecedor(this,true);
+            rf.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMIRelFornecedorActionPerformed
 
     /**
      * @param args the command line arguments

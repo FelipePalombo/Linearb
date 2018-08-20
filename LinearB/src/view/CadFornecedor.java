@@ -5,6 +5,14 @@
  */
 package view;
 
+import control.FornecedorDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Fornecedor;
+
 /**
  *
  * @author Felipe
@@ -14,11 +22,15 @@ public class CadFornecedor extends javax.swing.JDialog {
     /**
      * Creates new form CadFornecedor
      */
-    public CadFornecedor(java.awt.Frame parent, boolean modal) {
+    public CadFornecedor(java.awt.Frame parent, boolean modal) throws SQLException {
         super(parent, modal);
         initComponents();
+        fdao = new FornecedorDAO();
     }
-
+    FornecedorDAO fdao;
+    public void adicionar(Fornecedor fnc) throws SQLException{
+        fdao.cadastrar(fnc);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,21 +40,72 @@ public class CadFornecedor extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jTFNome = new javax.swing.JTextField();
+        jBCadastrar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel1.setText("Nome:");
+
+        jTFNome.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        jBCadastrar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jBCadastrar.setText("Cadastrar");
+        jBCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBCadastrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBCadastrar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
+        try {
+            int op = JOptionPane.showConfirmDialog(null, "Confirma o cadastro do fornecedor "+jTFNome.getText()+", de código "
+                    +(fdao.getLastCode()+1)+"?");
+            switch(op){
+                case 0:
+                    adicionar(new Fornecedor(jTFNome.getText()));
+                    jTFNome.setText("");
+                    break;
+                case 1:
+                    jTFNome.setText("");
+                    break;
+                case 2: 
+                    JOptionPane.showMessageDialog(null, "Cancelado!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }//GEN-LAST:event_jBCadastrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -74,7 +137,12 @@ public class CadFornecedor extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CadFornecedor dialog = new CadFornecedor(new javax.swing.JFrame(), true);
+                CadFornecedor dialog = null;
+                try {
+                    dialog = new CadFornecedor(new javax.swing.JFrame(), true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CadFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -87,5 +155,8 @@ public class CadFornecedor extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBCadastrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTFNome;
     // End of variables declaration//GEN-END:variables
 }
